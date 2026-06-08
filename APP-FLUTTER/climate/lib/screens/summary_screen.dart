@@ -39,7 +39,7 @@ class SummaryView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final next = _nextActivity;
-    final saludo = userName.trim().isEmpty ? 'Bienvenido' : 'Bienvenido, ${userName.trim()}';
+    final saludo = userName.trim().isEmpty ? '¡Bienvenido!' : '¡Bienvenido, ${userName.trim()}!';
     return ListView(
       children: [
         SurfaceBox(
@@ -47,7 +47,7 @@ class SummaryView extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                '$saludo 👋',
+                saludo,
                 style: const TextStyle(
                   color: AppColors.ink,
                   fontSize: 22,
@@ -56,7 +56,7 @@ class SummaryView extends StatelessWidget {
               ),
               const SizedBox(height: 4),
               const Text(
-                '¿Qué haremos hoy?',
+                'Hoy es un gran día para planear. ¿Qué haremos?',
                 style: TextStyle(color: AppColors.muted, fontSize: 15),
               ),
             ],

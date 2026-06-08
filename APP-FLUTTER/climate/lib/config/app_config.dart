@@ -1,5 +1,3 @@
-import 'package:flutter/foundation.dart';
-
 const demoEmail = 'estudiante@universidad.edu';
 const demoPassword = 'Climate2026!';
 
@@ -13,10 +11,11 @@ const _envApiBaseUrl = String.fromEnvironment('API_BASE_URL');
 /// - Dispositivo fisico: usa --dart-define con la IP LAN del PC.
 String get apiBaseUrl {
   if (_envApiBaseUrl.isNotEmpty) return _envApiBaseUrl;
-  if (!kIsWeb && defaultTargetPlatform == TargetPlatform.android) {
-    return 'http://10.0.2.2:8000/api';
-  }
-  return 'http://127.0.0.1:8000/api';
+  // Backend en la nube (Render): la app funciona SIN CABLE desde cualquier red.
+  // Para desarrollo local, compila con --dart-define, por ejemplo:
+  //   --dart-define=API_BASE_URL=http://127.0.0.1:8000/api  (fisico + adb reverse)
+  //   --dart-define=API_BASE_URL=http://10.0.2.2:8000/api   (emulador Android)
+  return 'https://climate-planner-api-3hkr.onrender.com/api';
 }
 
 const openWeatherApiKey = String.fromEnvironment(

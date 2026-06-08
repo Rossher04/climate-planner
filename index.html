@@ -1,0 +1,254 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Climate - Avance Visual</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <main class="stage">
+      <section class="phone" aria-label="Prototipo visual de la app">
+        <div class="status-bar">
+          <span>9:41</span>
+          <span>LTE 100%</span>
+        </div>
+
+        <section class="screen screen-login is-active" data-screen="login">
+          <div class="brand-mark">CL</div>
+          <h1>Climate</h1>
+          <p class="subtitle">Planifica actividades segun ubicacion, clima y estadistica.</p>
+
+          <form class="login-card">
+            <label>
+              Correo
+              <input type="email" value="estudiante@universidad.edu" />
+            </label>
+            <label>
+              Contrasena
+              <input type="password" value="12345678" />
+            </label>
+            <button type="button" class="primary-action" data-open="dashboard">Ingresar</button>
+          </form>
+
+          <button class="link-action" type="button">Recuperar contrasena</button>
+        </section>
+
+        <section class="screen app-shell" data-screen="dashboard">
+          <aside class="drawer">
+            <div class="drawer-brand">
+              <div class="brand-mark small">CL</div>
+              <div>
+                <strong>Climate</strong>
+                <span>Avance 20 de mayo</span>
+              </div>
+            </div>
+            <button class="nav-item is-selected" data-view="home">Resumen</button>
+            <button class="nav-item" data-view="locations">Ubicaciones</button>
+            <button class="nav-item" data-view="activities">Actividades</button>
+            <button class="nav-item" data-view="pending">Pendientes</button>
+            <button class="nav-item" data-view="stats">Estadistica</button>
+            <button class="nav-item muted" data-open="login">Cerrar sesion</button>
+          </aside>
+
+          <section class="content">
+            <header class="topbar">
+              <div>
+                <span class="eyebrow">Prototipo Flutter</span>
+                <h2 id="view-title">Resumen</h2>
+              </div>
+              <div class="weather-pill">
+                <span class="weather-dot"></span>
+                24 C
+              </div>
+            </header>
+
+            <section class="view is-visible" data-view-panel="home">
+              <div class="metric-grid">
+                <article class="metric accent-blue">
+                  <span>Ubicaciones</span>
+                  <strong>3</strong>
+                </article>
+                <article class="metric accent-green">
+                  <span>Actividades</span>
+                  <strong>5</strong>
+                </article>
+                <article class="metric accent-red">
+                  <span>Riesgo lluvia</span>
+                  <strong>32%</strong>
+                </article>
+              </div>
+
+              <article class="decision-panel">
+                <div>
+                  <span class="eyebrow">Actividad proxima</span>
+                  <h3>Partido de futbol</h3>
+                  <p>Zona 3, Quetzaltenango · 21 de mayo · 16:00</p>
+                </div>
+                <div class="score-ring">
+                  <span>68%</span>
+                  <small>realizable</small>
+                </div>
+              </article>
+
+              <div class="timeline">
+                <article>
+                  <span class="tag ok">Recomendada</span>
+                  <strong>Reunion de estudio</strong>
+                  <small>Interior · clima no afecta la actividad</small>
+                </article>
+                <article>
+                  <span class="tag warn">Revisar</span>
+                  <strong>Caminata al parque</strong>
+                  <small>Aire libre · probabilidad de lluvia media</small>
+                </article>
+              </div>
+            </section>
+
+            <section class="view" data-view-panel="locations">
+              <div class="list-header">
+                <h3>Ubicaciones registradas</h3>
+                <button class="icon-button" type="button">+</button>
+              </div>
+              <article class="location-item">
+                <div class="map-thumb blue"></div>
+                <div>
+                  <strong>Universidad Mesoamericana</strong>
+                  <small>14.8467, -91.5189</small>
+                  <p>Ubicacion obtenida por GPS del telefono.</p>
+                </div>
+              </article>
+              <article class="location-item">
+                <div class="map-thumb coral"></div>
+                <div>
+                  <strong>Parque Central</strong>
+                  <small>14.8341, -91.5181</small>
+                  <p>Ubicacion seleccionada desde Google Maps.</p>
+                </div>
+              </article>
+              <article class="form-preview">
+                <h3>Registro de ubicacion</h3>
+                <input value="Cancha zona 3" />
+                <div class="two-cols">
+                  <input value="14.8421" />
+                  <input value="-91.5210" />
+                </div>
+                <button type="button" class="secondary-action">Guardar ubicacion</button>
+              </article>
+            </section>
+
+            <section class="view" data-view-panel="activities">
+              <div class="list-header">
+                <h3>Actividades</h3>
+                <button class="icon-button" type="button">+</button>
+              </div>
+              <article class="form-preview">
+                <h3>Nueva actividad</h3>
+                <input value="Partido de futbol" />
+                <select>
+                  <option>Cancha zona 3</option>
+                  <option>Universidad Mesoamericana</option>
+                </select>
+                <div class="two-cols">
+                  <input value="21/05/2026" />
+                  <input value="16:00" />
+                </div>
+                <div class="segmented">
+                  <button class="is-selected" type="button">Aire libre</button>
+                  <button type="button">Interior</button>
+                </div>
+                <button class="secondary-action" type="button">Validar horario</button>
+              </article>
+              <div class="timeline compact">
+                <article>
+                  <strong>Reunion de estudio</strong>
+                  <small>Interior · 20/05/2026 · 18:00</small>
+                </article>
+                <article>
+                  <strong>Caminata al parque</strong>
+                  <small>Aire libre · 22/05/2026 · 07:00</small>
+                </article>
+              </div>
+            </section>
+
+            <section class="view" data-view-panel="pending">
+              <div class="filter-row">
+                <button class="filter is-selected" type="button">Fecha</button>
+                <button class="filter" type="button">Ubicacion</button>
+                <button class="filter" type="button">Probabilidad</button>
+              </div>
+              <article class="pending-card">
+                <div>
+                  <span class="tag ok">Realizar</span>
+                  <h3>Reunion de estudio</h3>
+                  <p>Interior · lluvia 41% · impacto bajo</p>
+                </div>
+                <strong>91%</strong>
+              </article>
+              <article class="pending-card">
+                <div>
+                  <span class="tag warn">Posible</span>
+                  <h3>Partido de futbol</h3>
+                  <p>Aire libre · lluvia 32% · revisar clima</p>
+                </div>
+                <strong>68%</strong>
+              </article>
+              <article class="pending-card">
+                <div>
+                  <span class="tag danger">Reagendar</span>
+                  <h3>Caminata al parque</h3>
+                  <p>Aire libre · lluvia 72% · alto riesgo</p>
+                </div>
+                <strong>28%</strong>
+              </article>
+              <button class="primary-action full" type="button">Marcar actividad finalizada</button>
+            </section>
+
+            <section class="view" data-view-panel="stats">
+              <article class="stats-summary">
+                <div>
+                  <span>Media</span>
+                  <strong id="mean-value">24.4 C</strong>
+                </div>
+                <div>
+                  <span>Mediana</span>
+                  <strong id="median-value">24 C</strong>
+                </div>
+                <div>
+                  <span>Moda</span>
+                  <strong id="mode-value">24 C</strong>
+                </div>
+              </article>
+              <article class="chart-panel">
+                <div class="list-header">
+                  <h3>Tendencia termica semanal</h3>
+                  <span class="tag ok" id="trend-label">Al alza</span>
+                </div>
+                <canvas id="trend-chart" width="320" height="180"></canvas>
+              </article>
+              <article class="formula-panel">
+                <h3>Bayes aplicado</h3>
+                <p>P(lluvia | alerta) = P(alerta | lluvia) x P(lluvia) / P(alerta)</p>
+                <strong>Indicador = 100% - probabilidad de lluvia</strong>
+              </article>
+            </section>
+          </section>
+        </section>
+      </section>
+
+      <aside class="presentation-notes">
+        <span class="eyebrow">Avance defendible</span>
+        <h2>Que se presenta el 20 de mayo</h2>
+        <ul>
+          <li>Arquitectura: Flutter + Django REST + PostgreSQL.</li>
+          <li>Flujo visual: login, menu, ubicaciones, actividades y pendientes.</li>
+          <li>Datos simulados para clima mientras se integra la API real.</li>
+          <li>Modulo estadistico con Bayes, media, mediana, moda y regresion lineal.</li>
+          <li>Ruta pendiente: conectar API, guardar en base de datos e integrar mapas.</li>
+        </ul>
+      </aside>
+    </main>
+
+    <script src="app.js"></script>
+  </body>
+</html>

@@ -1,0 +1,29 @@
+# ===== Secretos / entorno =====
+.env
+.env.local
+*/.env
+# (se mantiene .env.example en el repo)
+
+# ===== Python / Django =====
+__pycache__/
+*.py[cod]
+*.sqlite3
+.venv/
+*/.venv/
+BACKEND-DJANGO/staticfiles/
+
+# ===== Flutter =====
+APP-FLUTTER/climate/build/
+APP-FLUTTER/climate/.dart_tool/
+APP-FLUTTER/climate/.flutter-plugins
+APP-FLUTTER/climate/.flutter-plugins-dependencies
+APP-FLUTTER/climate/android/.gradle/
+APP-FLUTTER/climate/android/app/debug/
+APP-FLUTTER/climate/ios/Pods/
+
+# ===== Sistema / editor =====
+.DS_Store
+Thumbs.db
+*.log
+.idea/
+.vscode/

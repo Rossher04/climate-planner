@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Climate Planner — Defensa</title>
+  <link rel="stylesheet" href="lib/reveal.css">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+  <!-- Barra fija: logo + herramientas -->
+  <div class="topbar">
+    <div class="brand">
+      <svg class="logo" viewBox="0 0 64 48" aria-hidden="true">
+        <path d="M50 38a10 10 0 0 0-2-19.8A14 14 0 0 0 21 16a11 11 0 0 0-7 21h36z" fill="#B8DFF5" stroke="#2C6E91" stroke-width="2"/>
+        <circle cx="44" cy="14" r="7" fill="#4A90E2"/>
+      </svg>
+      <span>Climate Planner</span>
+    </div>
+    <div class="tools">
+      <button id="themeBtn" title="Modo oscuro (D)">🌙</button>
+      <button id="fsBtn" title="Pantalla completa (F)">⛶</button>
+    </div>
+  </div>
+
+  <div class="reveal">
+    <div class="slides">
+
+      <!-- 1 PORTADA -->
+      <section data-background-gradient="linear-gradient(135deg,#2C6E91,#4A90E2)" class="cover">
+        <div class="cover-logo">
+          <svg viewBox="0 0 64 48" width="140" height="105" aria-hidden="true">
+            <path d="M50 38a10 10 0 0 0-2-19.8A14 14 0 0 0 21 16a11 11 0 0 0-7 21h36z" fill="#FFFFFF" opacity="0.92"/>
+            <circle cx="44" cy="14" r="7" fill="#B8DFF5"/>
+          </svg>
+        </div>
+        <h1 class="cover-title">CLIMATE PLANNER</h1>
+        <p class="cover-sub">Aplicación de Planificación Climática</p>
+        <div class="cover-meta">
+          <div class="chip"><b>Integrantes:</b> [Integrantes del equipo]</div>
+          <div class="chip"><b>Universidad:</b> [Universidad / Facultad]</div>
+          <div class="chip"><b>Curso:</b> [Nombre del curso]</div>
+          <div class="chip"><b>Docente:</b> [Docente]</div>
+        </div>
+      </section>
+
+      <!-- 2 PROBLEMA -->
+      <section>
+        <h2 class="title">El Problema</h2>
+        <p class="lead">¿Qué resuelve Climate Planner?</p>
+        <div class="grid g3">
+          <div class="card fragment fade-up"><div class="ico">🌧️</div><h3>Clima impredecible</h3><p>En época de lluvia, las actividades al aire libre se arruinan por tormentas casi diarias.</p></div>
+          <div class="card fragment fade-up"><div class="ico">📅</div><h3>Cancelaciones</h3><p>Sin información confiable, los eventos se cancelan o reprograman a última hora.</p></div>
+          <div class="card fragment fade-up"><div class="ico">📊</div><h3>Sin datos reales</h3><p>Las apps comunes solo muestran el clima; no analizan la tendencia ni la probabilidad de realización.</p></div>
+        </div>
+        <p class="note fragment fade-in">Climate Planner combina <b>pronóstico real</b> + <b>estadística verificable</b> para decidir: realizar, revisar o posponer.</p>
+      </section>
+
+      <!-- 3 OBJETIVOS -->
+      <section>
+        <h2 class="title">Objetivos</h2>
+        <div class="card accent fragment fade-up">
+          <h3>🎯 Objetivo General</h3>
+          <p>Desarrollar una app móvil con backend propio que planifique actividades según el clima, integrando datos meteorológicos reales y un módulo estadístico (tendencia central, regresión y Bayes) para estimar la probabilidad de realización de cada evento.</p>
+        </div>
+        <div class="grid g2">
+          <div class="card fragment fade-up"><p>✔ Autenticación segura con <b>JWT</b>.</p></div>
+          <div class="card fragment fade-up"><p>✔ Registrar ubicaciones por <b>GPS, mapa y buscador</b>.</p></div>
+          <div class="card fragment fade-up"><p>✔ Crear actividades validando <b>horarios</b> y ubicación.</p></div>
+          <div class="card fragment fade-up"><p>✔ Obtener el <b>clima real</b> del evento y persistirlo.</p></div>
+          <div class="card fragment fade-up"><p>✔ Calcular <b>media, mediana, moda</b> de 7 días previos.</p></div>
+          <div class="card fragment fade-up"><p>✔ Calcular <b>regresión</b> y <b>probabilidad bayesiana</b>.</p></div>
+        </div>
+      </section>
+
+      <!-- 4 TECNOLOGIAS -->
+      <section>
+        <h2 class="title">Tecnologías</h2>
+        <div class="grid g3 tech">
+          <div class="card fragment zoom"><div class="ico">📱</div><h3>Flutter</h3><p>App móvil (Dart)</p></div>
+          <div class="card fragment zoom"><div class="ico">🐍</div><h3>Django REST</h3><p>API REST</p></div>
+          <div class="card fragment zoom"><div class="ico">🐘</div><h3>PostgreSQL</h3><p>Base de datos</p></div>
+          <div class="card fragment zoom"><div class="ico">🔑</div><h3>JWT</h3><p>Autenticación</p></div>
+          <div class="card fragment zoom"><div class="ico">🌦️</div><h3>OpenWeather / Open-Meteo</h3><p>Clima real</p></div>
+          <div class="card fragment zoom"><div class="ico">🗺️</div><h3>Google Maps</h3><p>Ubicaciones</p></div>
+        </div>
+      </section>
+
+      <!-- 5 ARQUITECTURA -->
+      <section>
+        <h2 class="title">Arquitectura</h2>
+        <div class="flow">
+          <div class="flow-node fragment fade-right">👤 Usuario</div>
+          <div class="flow-arrow fragment fade-in">↓</div>
+          <div class="flow-node n-flutter fragment fade-right">📱 Flutter (app móvil)</div>
+          <div class="flow-arrow fragment fade-in">↓ &nbsp;REST + JWT</div>
+          <div class="flow-node n-django fragment fade-right">🐍 API Django REST</div>
+          <div class="flow-arrow fragment fade-in">↓</div>
+          <div class="flow-node n-db fragment fade-right">🐘 PostgreSQL</div>
+          <div class="flow-arrow fragment fade-in">↑↓ &nbsp;datos reales</div>
+          <div class="flow-node n-api fragment fade-right">🌦️ Open-Meteo / OpenWeather</div>
+        </div>
+        <p class="note fragment fade-in">La app <b>solo visualiza</b>; el backend calcula y persiste. <b>Una sola fuente de verdad.</b></p>
+      </section>
+
+      <!-- 6 BASE DE DATOS -->
+      <section>
+        <h2 class="title">Base de Datos</h2>
+        <div class="er">
+          <div class="er-box fragment fade-up">User</div>
+          <div class="er-rel fragment fade-in">1—1</div>
+          <div class="er-box fragment fade-up">UserProfile</div>
+        </div>
+        <div class="er">
+          <div class="er-box fragment fade-up">User</div>
+          <div class="er-rel fragment fade-in">1—N</div>
+          <div class="er-box fragment fade-up">Location</div>
+          <div class="er-rel fragment fade-in">1—N</div>
+          <div class="er-box fragment fade-up">Activity</div>
+        </div>
+        <div class="er">
+          <div class="er-box fragment fade-up">Activity</div>
+          <div class="er-rel fragment fade-in">1—N</div>
+          <div class="er-box hot fragment fade-up">ClimateRecord</div>
+          <div class="er-rel fragment fade-in">&nbsp;&nbsp;1—1&nbsp;&nbsp;</div>
+          <div class="er-box hot fragment fade-up">StatisticalSummary</div>
+        </div>
+        <p class="note fragment fade-in"><b>StatisticalSummary</b> guarda media, mediana, moda, regresión y Bayes de cada actividad.</p>
+      </section>
+
+      <!-- 7 LOGIN -->
+      <section>
+        <h2 class="title">Módulo · Login</h2>
+        <div class="split">
+          <div class="side">
+            <div class="card fragment fade-up"><p>🔑 <b>JWT</b>: token de acceso (8 h) + refresco (7 días).</p></div>
+            <div class="card fragment fade-up"><p>👤 Inicio de sesión por <b>usuario o correo</b>.</p></div>
+            <div class="card fragment fade-up"><p>🔒 El token viaja en la cabecera <code>Authorization: Bearer</code>.</p></div>
+          </div>
+          <div class="shot fragment fade-in">[ INSERTAR CAPTURA LOGIN ]</div>
+        </div>
+      </section>
+
+      <!-- 8 UBICACIONES -->
+      <section>
+        <h2 class="title">Módulo · Ubicaciones</h2>
+        <div class="split">
+          <div class="side">
+            <div class="card fragment fade-up"><p>📍 <b>GPS</b> del dispositivo (geolocator).</p></div>
+            <div class="card fragment fade-up"><p>🗺️ <b>Google Maps</b> + buscador de lugares (POIs).</p></div>
+            <div class="card fragment fade-up"><p>✏️ <b>CRUD</b> completo (crear, editar, eliminar).</p></div>
+          </div>
+          <div class="shot fragment fade-in">[ INSERTAR CAPTURA UBICACIONES ]</div>
+        </div>
+      </section>
+
+      <!-- 9 ACTIVIDADES -->
+      <section>
+        <h2 class="title">Módulo · Actividades</h2>
+        <div class="split">
+          <div class="side">
+            <div class="card fragment fade-up"><p>📝 <b>Registro</b> con calendario y selector de hora.</p></div>
+            <div class="card fragment fade-up"><p>⏰ <b>Validación de horarios</b> (sin traslapes).</p></div>
+            <div class="card fragment fade-up"><p>🌦️ <b>Clima asociado</b> al momento del evento.</p></div>
+          </div>
+          <div class="shot fragment fade-in">[ INSERTAR CAPTURA ACTIVIDADES ]</div>
+        </div>
+      </section>
+
+      <!-- 10 PENDIENTES -->
+      <section>
+        <h2 class="title">Actividades Pendientes</h2>
+        <div class="split">
+          <div class="side">
+            <div class="card fragment fade-up"><p>📈 <b>Probabilidad de realización</b> (complemento de la lluvia).</p></div>
+            <div class="card fragment fade-up"><p>✅ <b>Finalización</b> de la actividad.</p></div>
+            <div class="card fragment fade-up"><p>🔁 <b>Reagendamiento</b> (recalcula clima y estadística).</p></div>
+          </div>
+          <div class="shot fragment fade-in">[ INSERTAR CAPTURA PENDIENTES ]</div>
+        </div>
+      </section>
+
+      <!-- 11 OPENWEATHER -->
+      <section>
+        <h2 class="title">Clima Real (Open-Meteo / OpenWeather)</h2>
+        <p class="lead">Consumo real de API → persistido en PostgreSQL</p>
+        <div class="grid g3 metrics">
+          <div class="metric fragment zoom"><div class="ico">🌡️</div><div class="big">20.9 °C</div><p>Temperatura</p></div>
+          <div class="metric fragment zoom"><div class="ico">💧</div><div class="big">82 %</div><p>Humedad</p></div>
+          <div class="metric fragment zoom"><div class="ico">🌧️</div><div class="big">84 %</div><p>Prob. de lluvia</p></div>
+        </div>
+        <p class="note fragment fade-in">Fuente verificada (HTTP 200). Cada actividad usa el pronóstico de <b>su hora exacta</b>.</p>
+      </section>
+
+      <!-- 12 ESTADISTICA DESCRIPTIVA -->
+      <section>
+        <h2 class="title">Estadística Descriptiva</h2>
+        <p class="lead">Sobre las 7 máximas previas: <code>[17.9, 18.9, 18.0, 17.2, 17.9, 19.9, 19.9]</code></p>
+        <div class="grid g3">
+          <div class="card fragment fade-up">
+            <h3>Media</h3>
+            <div class="frac"><span class="num">Σ xᵢ</span><span class="den">n</span></div>
+            <p class="res">= 18.53 °C</p>
+          </div>
+          <div class="card fragment fade-up">
+            <h3>Mediana</h3>
+            <p class="formula">valor central (ordenado)</p>
+            <p class="res">= 18.0 °C</p>
+          </div>
+          <div class="card fragment fade-up">
+            <h3>Moda</h3>
+            <p class="formula">valor más frecuente (al grado)</p>
+            <p class="res">= 18.0 °C</p>
+          </div>
+        </div>
+        <p class="note fragment fade-in">Calculadas en el servidor (<code>services.py</code>) con la librería <code>statistics</code> de Python.</p>
+      </section>
+
+      <!-- 13 BAYES -->
+      <section>
+        <h2 class="title">Probabilidad Bayesiana</h2>
+        <div class="bayes-formula fragment fade-in">
+          P(R|A) =
+          <span class="frac"><span class="num">P(A|R) · P(R)</span><span class="den">P(A|R)·P(R) + P(A|¬R)·P(¬R)</span></span>
+        </div>
+        <div class="grid g2">
+          <div class="side">
+            <div class="card fragment fade-up"><p><b>P(R) = 20%</b> · lluvia a priori (pronóstico, <i>variable</i>)</p></div>
+            <div class="card fragment fade-up"><p><b>P(A|R) = 85%</b> · acierto si llueve (sensibilidad)</p></div>
+            <div class="card fragment fade-up"><p><b>P(A|¬R) = 25%</b> · falsa alarma si no llueve</p></div>
+          </div>
+          <div class="card example fragment fade-up">
+            <h3>Ejemplo real (de 100 días)</h3>
+            <p>Llueve 20 → suena 17 ✅</p>
+            <p>No llueve 80 → suena 20 ❌</p>
+            <p>Total suena = 37</p>
+            <p class="res">P(R|A) = 17/37 = <b>45.95%</b></p>
+            <p>Realización = 100 − 45.95 = <b>54.05%</b></p>
+          </div>
+        </div>
+      </section>
+
+      <!-- 14 REGRESION -->
+      <section>
+        <h2 class="title">Regresión Lineal</h2>
+        <div class="split">
+          <div class="side">
+            <div class="bayes-formula small fragment fade-in">y = m·x + b</div>
+            <div class="card fragment fade-up"><p><b>Pendiente m = 0.2821</b> · °C por día</p></div>
+            <div class="card fragment fade-up"><p><b>Intercepto b = 17.40</b></p></div>
+            <div class="card accent fragment fade-up"><p>m &gt; 0 → <b>Tendencia: Calentamiento ↗</b></p></div>
+          </div>
+          <div class="chart-wrap fragment fade-in">
+            <canvas id="regChart"></canvas>
+          </div>
+        </div>
+      </section>
+
+      <!-- 15 AUDITORIA -->
+      <section>
+        <h2 class="title">Resultados de la Auditoría</h2>
+        <div class="grid g2 audit">
+          <div class="check fragment fade-right"><span>✓</span> OpenWeather / Open-Meteo funcionando</div>
+          <div class="check fragment fade-right"><span>✓</span> PostgreSQL funcionando</div>
+          <div class="check fragment fade-right"><span>✓</span> Media correcta</div>
+          <div class="check fragment fade-right"><span>✓</span> Mediana correcta</div>
+          <div class="check fragment fade-right"><span>✓</span> Moda correcta</div>
+          <div class="check fragment fade-right"><span>✓</span> Bayes correcto</div>
+          <div class="check fragment fade-right"><span>✓</span> Regresión correcta</div>
+          <div class="check fragment fade-right"><span>✓</span> Datos reales persistidos</div>
+        </div>
+        <p class="note fragment fade-in">Cada valor guardado coincidió con el recálculo manual de las fórmulas.</p>
+      </section>
+
+      <!-- 16 FLUJO ESTADISTICO -->
+      <section>
+        <h2 class="title">Flujo Estadístico</h2>
+        <div class="flow">
+          <div class="flow-node n-api fragment fade-up">🌦️ Open-Meteo (7 días + evento)</div>
+          <div class="flow-arrow fragment fade-in">↓</div>
+          <div class="flow-node n-django fragment fade-up">🐍 Django · analyze_activity()</div>
+          <div class="flow-arrow fragment fade-in">↓ &nbsp;media · mediana · moda · regresión · Bayes</div>
+          <div class="flow-node n-db fragment fade-up">🐘 PostgreSQL</div>
+          <div class="flow-arrow fragment fade-in">↓</div>
+          <div class="flow-node n-db fragment fade-up">📦 StatisticalSummary</div>
+          <div class="flow-arrow fragment fade-in">↓ &nbsp;JSON</div>
+          <div class="flow-node n-flutter fragment fade-up">📱 Flutter Dashboard (solo visualiza)</div>
+        </div>
+      </section>
+
+      <!-- 17 CONCLUSIONES -->
+      <section>
+        <h2 class="title">Conclusiones</h2>
+        <ul class="big-list">
+          <li class="fragment fade-up">App funcional de 3 capas (Flutter, Django REST, PostgreSQL) con datos meteorológicos reales.</li>
+          <li class="fragment fade-up">El módulo estadístico cumple el enunciado: media, mediana y moda de los 7 días previos.</li>
+          <li class="fragment fade-up">La regresión lineal determina la tendencia (calentamiento/enfriamiento) y se grafica.</li>
+          <li class="fragment fade-up">El Teorema de Bayes se implementó correctamente; la realización es el complemento de la lluvia.</li>
+          <li class="fragment fade-up">Datos reales, trazables y reproducibles: el servidor calcula y persiste; la app solo visualiza.</li>
+        </ul>
+      </section>
+
+      <!-- 18 RECOMENDACIONES -->
+      <section>
+        <h2 class="title">Recomendaciones</h2>
+        <ul class="big-list">
+          <li class="fragment fade-up">Estimar los parámetros de Bayes (0.85 / 0.25) del historial real de lluvia observada.</li>
+          <li class="fragment fade-up">Integrar Google Places para mayor cobertura de búsqueda de lugares.</li>
+          <li class="fragment fade-up">Manejo automático de expiración del token JWT (volver al login).</li>
+          <li class="fragment fade-up">Pruebas automatizadas para el módulo estadístico y los endpoints.</li>
+          <li class="fragment fade-up">Desplegar backend + base de datos en la nube y generar APK de lanzamiento.</li>
+        </ul>
+      </section>
+
+      <!-- 19 PREGUNTAS PROBABLES -->
+      <section>
+        <h2 class="title">Preguntas Probables</h2>
+        <div class="grid g2">
+          <div class="card fragment fade-up"><p>❓ ¿De dónde salen los datos? → APIs reales (Open-Meteo/OpenWeather), persistidos en PostgreSQL.</p></div>
+          <div class="card fragment fade-up"><p>❓ ¿Qué datos usan media/mediana/moda? → Máximas de los 7 días anteriores del lugar.</p></div>
+          <div class="card fragment fade-up"><p>❓ ¿De dónde salen 0.85 y 0.25? → Parámetros de confiabilidad asumidos y documentados.</p></div>
+          <div class="card fragment fade-up"><p>❓ ¿Por qué a veces 100% de lluvia? → Época de lluvia; confirmado por dos fuentes.</p></div>
+          <div class="card fragment fade-up"><p>❓ ¿Dónde se calcula? → Solo en el servidor; la app no recalcula.</p></div>
+          <div class="card fragment fade-up"><p>❓ ¿Qué es la realización? → 100 − P(lluvia Bayes).</p></div>
+        </div>
+      </section>
+
+      <!-- 20 GRACIAS -->
+      <section data-background-gradient="linear-gradient(135deg,#2C6E91,#4A90E2)" class="cover">
+        <div class="cover-logo">
+          <svg viewBox="0 0 64 48" width="120" height="90" aria-hidden="true">
+            <path d="M50 38a10 10 0 0 0-2-19.8A14 14 0 0 0 21 16a11 11 0 0 0-7 21h36z" fill="#FFFFFF" opacity="0.92"/>
+            <circle cx="44" cy="14" r="7" fill="#B8DFF5"/>
+          </svg>
+        </div>
+        <h1 class="cover-title">¡Gracias por su atención!</h1>
+        <p class="cover-sub">Climate Planner — Planificador Inteligente de Actividades</p>
+      </section>
+
+    </div>
+  </div>
+
+  <script src="lib/reveal.js"></script>
+  <script src="lib/chart.umd.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>

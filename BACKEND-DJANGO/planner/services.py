@@ -442,12 +442,13 @@ def generate_reset_token():
 
 
 def request_password_recovery(email):
-    try:
-        user = User.objects.get(email=email)
-    except User.DoesNotExist:
+    # filter().first() en vez de get(): evita el error 500 si hubiera dos
+    # usuarios con el mismo correo, y la busqueda es insensible a mayusculas.
+    user = User.objects.filter(email__iexact=email).first()
+    if user is None:
         return {'success': False, 'error': 'Usuario no encontrado'}
 
-    profile = user.profile
+    profile, _ = UserProfile.objects.get_or_create(user=user)
     temp_password = generate_temporary_password()
     reset_token = generate_reset_token()
 
@@ -459,11 +460,21 @@ def request_password_recovery(email):
     user.set_password(temp_password)
     user.save()
 
-    send_password_recovery_email(user, temp_password, reset_token)
+    # IMPORTANTE: en Render (plan free) los puertos SMTP estan bloqueados, por lo
+    # que un envio real colgaria el worker (timeout -> 500). Por eso solo se
+    # intenta enviar con el backend de CONSOLA (desarrollo local) y la contrasena
+    # temporal se DEVUELVE para mostrarla en la app (modo academico). Para correo
+    # real se integraria una API HTTP de email (p. ej. Resend/SendGrid).
+    try:
+        if 'console' in (settings.EMAIL_BACKEND or ''):
+            send_password_recovery_email(user, temp_password, reset_token)
+    except Exception:
+        pass
 
     return {
         'success': True,
-        'message': 'Se ha enviado una contraseña temporal a tu correo.',
+        'temporary_password': temp_password,
+        'message': f'Tu contraseña temporal es: {temp_password}  —  inicia sesión con ella y cámbiala.',
     }
 
 

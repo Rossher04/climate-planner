@@ -42,22 +42,39 @@ class SummaryView extends StatelessWidget {
     final saludo = userName.trim().isEmpty ? '¡Bienvenido!' : '¡Bienvenido, ${userName.trim()}!';
     return ListView(
       children: [
-        SurfaceBox(
+        Container(
+          width: double.infinity,
+          padding: const EdgeInsets.all(18),
+          decoration: BoxDecoration(
+            gradient: const LinearGradient(
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+              colors: [AppColors.blue, AppColors.navy],
+            ),
+            borderRadius: BorderRadius.circular(16),
+            boxShadow: [
+              BoxShadow(
+                color: AppColors.navy.withValues(alpha: 0.30),
+                blurRadius: 16,
+                offset: const Offset(0, 8),
+              ),
+            ],
+          ),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
                 saludo,
                 style: const TextStyle(
-                  color: AppColors.ink,
-                  fontSize: 22,
+                  color: Colors.white,
+                  fontSize: 24,
                   fontWeight: FontWeight.w900,
                 ),
               ),
-              const SizedBox(height: 4),
+              const SizedBox(height: 6),
               const Text(
                 'Hoy es un gran día para planear. ¿Qué haremos?',
-                style: TextStyle(color: AppColors.muted, fontSize: 15),
+                style: TextStyle(color: Colors.white, fontSize: 15, height: 1.3),
               ),
             ],
           ),

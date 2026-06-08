@@ -441,6 +441,37 @@ def generate_reset_token():
     return secrets.token_urlsafe(48)
 
 
+def send_email_via_resend(to_email, subject, text_body):
+    """Envia un correo con la API HTTPS de Resend. Devuelve True si se envio.
+
+    Resend funciona en Render free porque usa HTTPS (puerto 443), no SMTP.
+    Sin un dominio verificado, Resend solo permite enviar al correo de la propia
+    cuenta de Resend (suficiente para la demostracion academica).
+    """
+    if not settings.RESEND_API_KEY:
+        return False
+    payload = json.dumps({
+        'from': settings.RESEND_FROM_EMAIL,
+        'to': [to_email],
+        'subject': subject,
+        'text': text_body,
+    }).encode('utf-8')
+    request = urllib.request.Request(
+        'https://api.resend.com/emails',
+        data=payload,
+        headers={
+            'Authorization': f'Bearer {settings.RESEND_API_KEY}',
+            'Content-Type': 'application/json',
+        },
+        method='POST',
+    )
+    try:
+        with urllib.request.urlopen(request, timeout=10) as response:
+            return 200 <= response.status < 300
+    except Exception:
+        return False
+
+
 def request_password_recovery(email):
     # filter().first() en vez de get(): evita el error 500 si hubiera dos
     # usuarios con el mismo correo, y la busqueda es insensible a mayusculas.
@@ -460,11 +491,25 @@ def request_password_recovery(email):
     user.set_password(temp_password)
     user.save()
 
-    # IMPORTANTE: en Render (plan free) los puertos SMTP estan bloqueados, por lo
-    # que un envio real colgaria el worker (timeout -> 500). Por eso solo se
-    # intenta enviar con el backend de CONSOLA (desarrollo local) y la contrasena
-    # temporal se DEVUELVE para mostrarla en la app (modo academico). Para correo
-    # real se integraria una API HTTP de email (p. ej. Resend/SendGrid).
+    subject = 'Recuperación de contraseña - Climate Planner'
+    body = (
+        f'Hola {user.first_name or user.username},\n\n'
+        f'Tu contraseña temporal es: {temp_password}\n\n'
+        f'Inicia sesión con ella y la app te pedirá crear una nueva.\n\n'
+        f'Si no solicitaste esto, ignora este correo.\n\nClimate Planner'
+    )
+
+    # MODO SEGURO: si Resend esta configurado, se envia por correo REAL y NO se
+    # devuelve la contrasena en la respuesta (solo la recibe el dueño del correo).
+    if send_email_via_resend(user.email, subject, body):
+        return {
+            'success': True,
+            'sent_email': True,
+            'message': 'Te enviamos una contraseña temporal a tu correo registrado.',
+        }
+
+    # MODO ACADEMICO (sin Resend): backend de consola en local + mostrar la
+    # temporal en la app para no bloquear al usuario.
     try:
         if 'console' in (settings.EMAIL_BACKEND or ''):
             send_password_recovery_email(user, temp_password, reset_token)
@@ -473,9 +518,8 @@ def request_password_recovery(email):
 
     return {
         'success': True,
-        'reset_token': reset_token,
         'temporary_password': temp_password,
-        'message': 'Verifica tu correo y define tu nueva contraseña.',
+        'message': f'Tu contraseña temporal es: {temp_password}',
     }
 
 

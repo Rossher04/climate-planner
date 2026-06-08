@@ -217,6 +217,12 @@ SIMPLE_JWT = {
 OPENWEATHER_API_KEY = os.getenv('OPENWEATHER_API_KEY', '')
 GOOGLE_MAPS_API_KEY = os.getenv('GOOGLE_MAPS_API_KEY', '')
 
+# Resend: API de correo por HTTPS. A diferencia de SMTP (bloqueado en Render
+# free), funciona porque usa el puerto 443. Si RESEND_API_KEY esta definida, la
+# recuperacion envia la contrasena temporal por correo REAL (modo seguro).
+RESEND_API_KEY = os.getenv('RESEND_API_KEY', '')
+RESEND_FROM_EMAIL = os.getenv('RESEND_FROM_EMAIL', 'Climate Planner <onboarding@resend.dev>')
+
 # Email. Por defecto se imprime en consola (modo academico local). Para enviar
 # correos reales con Gmail basta definir estas variables en el entorno (.env
 # local o variables de Render):

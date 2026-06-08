@@ -21,7 +21,9 @@ class RecoveryDialog extends StatefulWidget {
 class _RecoveryDialogState extends State<RecoveryDialog> {
   final emailController = TextEditingController();
   bool isLoading = false;
+  bool done = false;
   String? tempPassword;
+  String resultMessage = '';
 
   @override
   void dispose() {
@@ -39,11 +41,16 @@ class _RecoveryDialogState extends State<RecoveryDialog> {
     try {
       final data = await widget.apiService.startPasswordRecovery(email);
       final temp = data['temporary_password'] as String?;
-      if (temp == null || temp.isEmpty) {
+      final msg = data['message'] as String?;
+      if ((temp == null || temp.isEmpty) && (msg == null || msg.isEmpty)) {
         throw Exception(data['error']?.toString() ?? 'No se pudo recuperar la cuenta.');
       }
       if (!mounted) return;
-      setState(() => tempPassword = temp);
+      setState(() {
+        tempPassword = (temp != null && temp.isNotEmpty) ? temp : null;
+        resultMessage = msg ?? '';
+        done = true;
+      });
     } catch (e) {
       _msg('$e'.replaceFirst('Exception: ', ''));
     } finally {
@@ -57,7 +64,6 @@ class _RecoveryDialogState extends State<RecoveryDialog> {
 
   @override
   Widget build(BuildContext context) {
-    final hasTemp = tempPassword != null;
     return AlertDialog(
       title: const Row(
         children: [
@@ -66,8 +72,8 @@ class _RecoveryDialogState extends State<RecoveryDialog> {
           Expanded(child: Text('Recuperar contraseña')),
         ],
       ),
-      content: hasTemp ? _resultStep() : _emailStep(),
-      actions: hasTemp
+      content: done ? _resultStep() : _emailStep(),
+      actions: done
           ? [
               FilledButton(
                 onPressed: () => Navigator.of(context).pop(),
@@ -120,6 +126,39 @@ class _RecoveryDialogState extends State<RecoveryDialog> {
   }
 
   Widget _resultStep() {
+    if (tempPassword == null) {
+      // Modo SEGURO: la temporal se envio por correo, no se muestra en la app.
+      return Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const Row(
+            children: [
+              Icon(Icons.mark_email_read_outlined, color: AppColors.green),
+              SizedBox(width: 8),
+              Expanded(
+                child: Text(
+                  'Revisa tu correo',
+                  style: TextStyle(fontWeight: FontWeight.w800, color: AppColors.ink),
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 8),
+          Text(
+            resultMessage.isEmpty
+                ? 'Te enviamos una contraseña temporal a tu correo.'
+                : resultMessage,
+            style: const TextStyle(color: AppColors.muted, height: 1.4),
+          ),
+          const SizedBox(height: 8),
+          const Text(
+            'Inicia sesión con esa contraseña; la app te pedirá crear una nueva.',
+            style: TextStyle(color: AppColors.muted, height: 1.4),
+          ),
+        ],
+      );
+    }
     return Column(
       mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: CrossAxisAlignment.start,

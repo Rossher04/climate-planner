@@ -24,7 +24,14 @@ class SurfaceBox extends StatelessWidget {
       decoration: BoxDecoration(
         color: color ?? Colors.white,
         border: Border.all(color: AppColors.line),
-        borderRadius: BorderRadius.circular(8),
+        borderRadius: BorderRadius.circular(16),
+        boxShadow: const [
+          BoxShadow(
+            color: Color(0x14223A4F),
+            blurRadius: 16,
+            offset: Offset(0, 6),
+          ),
+        ],
       ),
       child: child,
     );

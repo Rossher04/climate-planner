@@ -180,14 +180,18 @@ class ApiService {
     return 'Se ha enviado una contraseña temporal a tu correo.';
   }
 
-  /// Inicia la recuperacion: el backend genera un token de reseteo y lo
-  /// devuelve para poder restablecer la contrasena directamente (modal).
-  Future<Map<String, dynamic>> startPasswordRecovery(String email) async {
+  /// Inicia la recuperacion exigiendo USUARIO + CORREO que coincidan en la
+  /// misma cuenta. El backend asigna una contrasena temporal y la devuelve (o
+  /// la envia por correo si Resend esta activo).
+  Future<Map<String, dynamic>> startPasswordRecovery(
+    String email, {
+    String username = '',
+  }) async {
     final response = await client
         .post(
           _uri('/auth/password-recovery/'),
           headers: {'Content-Type': 'application/json'},
-          body: jsonEncode({'email': email}),
+          body: jsonEncode({'email': email, 'username': username}),
         )
         .timeout(const Duration(seconds: 60));
     if (response.statusCode != 200) {

@@ -19,6 +19,7 @@ class RecoveryDialog extends StatefulWidget {
 }
 
 class _RecoveryDialogState extends State<RecoveryDialog> {
+  final usernameController = TextEditingController();
   final emailController = TextEditingController();
   bool isLoading = false;
   bool done = false;
@@ -27,19 +28,26 @@ class _RecoveryDialogState extends State<RecoveryDialog> {
 
   @override
   void dispose() {
+    usernameController.dispose();
     emailController.dispose();
     super.dispose();
   }
 
   Future<void> _request() async {
+    final username = usernameController.text.trim();
     final email = emailController.text.trim();
+    if (username.isEmpty) {
+      _msg('Ingresa tu usuario.');
+      return;
+    }
     if (email.isEmpty || !email.contains('@') || !email.contains('.')) {
       _msg('Ingresa un correo válido.');
       return;
     }
     setState(() => isLoading = true);
     try {
-      final data = await widget.apiService.startPasswordRecovery(email);
+      final data = await widget.apiService
+          .startPasswordRecovery(email, username: username);
       final temp = data['temporary_password'] as String?;
       final msg = data['message'] as String?;
       if ((temp == null || temp.isEmpty) && (msg == null || msg.isEmpty)) {
@@ -106,15 +114,24 @@ class _RecoveryDialogState extends State<RecoveryDialog> {
       mainAxisSize: MainAxisSize.min,
       children: [
         const Text(
-          'Ingresa el correo registrado de tu cuenta. Te asignaremos una '
-          'contraseña temporal.',
+          'Por seguridad, ingresa tu usuario y el correo registrado. Ambos '
+          'deben pertenecer a la misma cuenta.',
           style: TextStyle(color: AppColors.muted),
         ),
         const SizedBox(height: 14),
         TextField(
+          controller: usernameController,
+          autofocus: true,
+          decoration: const InputDecoration(
+            labelText: 'Usuario',
+            prefixIcon: Icon(Icons.person_outline),
+            border: OutlineInputBorder(),
+          ),
+        ),
+        const SizedBox(height: 10),
+        TextField(
           controller: emailController,
           keyboardType: TextInputType.emailAddress,
-          autofocus: true,
           decoration: const InputDecoration(
             labelText: 'Correo',
             prefixIcon: Icon(Icons.mail_outline),

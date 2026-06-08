@@ -233,6 +233,8 @@ class StatisticalSummarySerializer(serializers.ModelSerializer):
 
 class PasswordRecoverySerializer(serializers.Serializer):
     email = serializers.EmailField()
+    # Opcional para compatibilidad, pero la app lo envia siempre.
+    username = serializers.CharField(required=False, allow_blank=True)
 
 
 class PasswordResetSerializer(serializers.Serializer):

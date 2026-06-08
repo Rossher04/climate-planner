@@ -472,12 +472,16 @@ def send_email_via_resend(to_email, subject, text_body):
         return False
 
 
-def request_password_recovery(email):
-    # filter().first() en vez de get(): evita el error 500 si hubiera dos
-    # usuarios con el mismo correo, y la busqueda es insensible a mayusculas.
+def request_password_recovery(email, username=None):
+    # Seguridad: pedimos USUARIO + CORREO y que ambos pertenezcan a la MISMA
+    # cuenta. Asi no basta con saber un correo para tomar la cuenta.
+    # Para no revelar cual de los dos esta mal, devolvemos el mismo error.
     user = User.objects.filter(email__iexact=email).first()
     if user is None:
-        return {'success': False, 'error': 'Usuario no encontrado'}
+        return {'success': False, 'error': 'Usuario y correo no coinciden con ninguna cuenta.'}
+    if username is not None and username.strip():
+        if user.username.lower() != username.strip().lower():
+            return {'success': False, 'error': 'Usuario y correo no coinciden con ninguna cuenta.'}
 
     profile, _ = UserProfile.objects.get_or_create(user=user)
     temp_password = generate_temporary_password()

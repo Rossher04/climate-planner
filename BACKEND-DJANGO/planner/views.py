@@ -78,7 +78,10 @@ class PasswordRecoveryView(generics.CreateAPIView):
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
 
-        result = request_password_recovery(serializer.validated_data['email'])
+        result = request_password_recovery(
+            serializer.validated_data['email'],
+            username=serializer.validated_data.get('username'),
+        )
 
         if result['success']:
             return Response(result, status=status.HTTP_200_OK)

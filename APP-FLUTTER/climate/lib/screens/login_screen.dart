@@ -5,6 +5,7 @@ import '../routes/route_names.dart';
 import '../services/api_service.dart';
 import '../themes/app_colors.dart';
 import '../widgets/climate_logo.dart';
+import '../widgets/recovery_dialog.dart';
 import '../widgets/surface_box.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -155,10 +156,12 @@ class _LoginScreenState extends State<LoginScreen> {
                   ),
                   const SizedBox(height: 14),
                   TextButton.icon(
-                    onPressed: () => Navigator.of(context)
-                        .pushNamed(RouteNames.forgotPassword),
+                    onPressed: () => showDialog(
+                      context: context,
+                      builder: (_) => RecoveryDialog(apiService: widget.apiService),
+                    ),
                     icon: const Icon(Icons.key),
-                    label: const Text('Recuperar contraseña'),
+                    label: const Text('¿Olvidó su contraseña?'),
                   ),
                 ],
               ),

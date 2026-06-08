@@ -473,8 +473,9 @@ def request_password_recovery(email):
 
     return {
         'success': True,
+        'reset_token': reset_token,
         'temporary_password': temp_password,
-        'message': f'Tu contraseña temporal es: {temp_password}  —  inicia sesión con ella y cámbiala.',
+        'message': 'Verifica tu correo y define tu nueva contraseña.',
     }
 
 

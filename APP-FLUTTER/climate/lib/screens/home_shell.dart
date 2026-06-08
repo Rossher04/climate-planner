@@ -31,6 +31,7 @@ class _HomeShellState extends State<HomeShell> {
   List<PlannerLocation> locations = [];
   bool isSyncing = false;
   bool loadedFromApi = false;
+  String userName = '';
 
   // Temperatura ACTUAL real (OpenWeatherMap) para el badge del header.
   double? currentTemp;
@@ -104,6 +105,13 @@ class _HomeShellState extends State<HomeShell> {
     try {
       final fetchedLocations = await widget.apiService.fetchLocations();
       final fetchedActivities = await widget.apiService.fetchActivities();
+      var name = userName;
+      try {
+        final me = await widget.apiService.fetchMe();
+        name = me.firstName.trim().isNotEmpty ? me.firstName.trim() : me.username;
+      } catch (_) {
+        // Si falla, el saludo usa un valor generico.
+      }
       if (!mounted) return;
 
       setState(() {
@@ -111,6 +119,7 @@ class _HomeShellState extends State<HomeShell> {
         activities
           ..clear()
           ..addAll(fetchedActivities);
+        userName = name;
         loadedFromApi = true;
       });
     } catch (e) {
@@ -187,6 +196,9 @@ class _HomeShellState extends State<HomeShell> {
     } catch (e) {
       _showError('No se pudieron recargar las ubicaciones: $e');
     }
+    // Si se elimino una ubicacion, sus actividades se borran EN CASCADA en el
+    // backend; refrescamos la lista para que tambien desaparezcan en la app.
+    await _refreshActivities();
   }
 
   Future<void> _markFinished(Activity activity) async {
@@ -268,7 +280,7 @@ class _HomeShellState extends State<HomeShell> {
   Widget _buildView() {
     switch (selectedView) {
       case ClimateView.summary:
-        return SummaryView(activities: activities);
+        return SummaryView(activities: activities, userName: userName);
       case ClimateView.locations:
         return LocationsView(
           apiService: widget.apiService,

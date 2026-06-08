@@ -8,9 +8,10 @@ import '../widgets/section_title.dart';
 import '../widgets/surface_box.dart';
 
 class SummaryView extends StatelessWidget {
-  const SummaryView({super.key, required this.activities});
+  const SummaryView({super.key, required this.activities, this.userName = ''});
 
   final List<Activity> activities;
+  final String userName;
 
   Activity? get _nextActivity {
     final now = DateTime.now();
@@ -38,8 +39,30 @@ class SummaryView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final next = _nextActivity;
+    final saludo = userName.trim().isEmpty ? 'Bienvenido' : 'Bienvenido, ${userName.trim()}';
     return ListView(
       children: [
+        SurfaceBox(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                '$saludo 👋',
+                style: const TextStyle(
+                  color: AppColors.ink,
+                  fontSize: 22,
+                  fontWeight: FontWeight.w900,
+                ),
+              ),
+              const SizedBox(height: 4),
+              const Text(
+                '¿Qué haremos hoy?',
+                style: TextStyle(color: AppColors.muted, fontSize: 15),
+              ),
+            ],
+          ),
+        ),
+        const SizedBox(height: 14),
         Row(
           children: [
             Expanded(

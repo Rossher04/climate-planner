@@ -180,6 +180,45 @@ class ApiService {
     return 'Se ha enviado una contraseña temporal a tu correo.';
   }
 
+  /// Inicia la recuperacion: el backend genera un token de reseteo y lo
+  /// devuelve para poder restablecer la contrasena directamente (modal).
+  Future<Map<String, dynamic>> startPasswordRecovery(String email) async {
+    final response = await client
+        .post(
+          _uri('/auth/password-recovery/'),
+          headers: {'Content-Type': 'application/json'},
+          body: jsonEncode({'email': email}),
+        )
+        .timeout(const Duration(seconds: 60));
+    if (response.statusCode != 200) {
+      throw Exception(_errorDetail(response.body));
+    }
+    final data = jsonDecode(response.body);
+    return data is Map<String, dynamic> ? data : <String, dynamic>{};
+  }
+
+  /// Restablece la contrasena usando el token de recuperacion (sin loguearse).
+  Future<void> resetPassword({
+    required String token,
+    required String newPassword,
+    required String confirmPassword,
+  }) async {
+    final response = await client
+        .post(
+          _uri('/auth/password-reset/'),
+          headers: {'Content-Type': 'application/json'},
+          body: jsonEncode({
+            'token': token,
+            'new_password': newPassword,
+            'password_confirm': confirmPassword,
+          }),
+        )
+        .timeout(const Duration(seconds: 30));
+    if (response.statusCode != 200) {
+      throw Exception(_errorDetail(response.body));
+    }
+  }
+
   // ─── Ubicaciones ──────────────────────────────────────────────────────────────
 
   Future<List<PlannerLocation>> fetchLocations() async {

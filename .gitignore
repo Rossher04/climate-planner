@@ -27,3 +27,6 @@ Thumbs.db
 *.log
 .idea/
 .vscode/
+
+# Configuracion local de Claude (no subir)
+.claude/
